@@ -42,7 +42,7 @@ int Move(x, y, color) {
 int main() {
 	int color = 1, i, j;
 	printf("Place: \n");
-	scanf_s("%d%d", &i, &j);
+	scanf("%d%d", &i, &j);
 	if (chess[i][j] == 0) {
 		printf("(%d,%d) : No chess\n", i, j);
 		if (Move(i, j, color)) {
