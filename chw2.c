@@ -40,24 +40,24 @@ int Move(x, y, color) {
 }
 
 int main() {
-	int color=1, i,j;
-	printf("先下黑棋，要下的位置: \n");
+	int color = 1, i, j;
+	printf("Place: \n");
 	scanf_s("%d%d", &i, &j);
 	if (chess[i][j] == 0) {
-		printf("(%d,%d)沒有棋子", i, j);
+		printf("(%d,%d) : No chess\n", i, j);
 		if (Move(i, j, color)) {
-			printf("且可以下\n");
+			printf("You can put it here\n");
 		}
 		else {
-			printf("但不能下\n");
+			printf("You can not put it here\n");
 		}
 
 	}
-	else if(chess[i][j] == 1) {
-		printf("(%d,%d)已有黑棋不能下棋\n", i, j);
+	else if (chess[i][j] == 1) {
+		printf("(%d,%d)Black chess already in this block\n", i, j);
 	}
 	else
-		printf("(%d,%d)已有白棋不能下棋\n",i,j);
+		printf("(%d,%d)White chess already in this block\n", i, j);
 
 	return 0;
 }
