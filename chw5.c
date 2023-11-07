@@ -25,7 +25,7 @@ void checkNewStepByColor(int chess[8][8], int next[8][8], int color)
 }
 
 void checkNewStep(int chess[8][8], int next[8][8], int x, int y) {
-    int directions[8][2] = { {-1, -1},{-1, 0},{-1, 1},{0, -1},{0, 1},{1, -1},{1, 0},{1, 1} };
+    int directions[8][2] = {{-1, -1},{-1, 0},{-1, 1},{0, -1},{0, 1},{1, -1},{1, 0},{1, 1}};
 
     for (int k = 0; k < 8; k++) {
         int dx = directions[k][0];
@@ -58,19 +58,19 @@ int newStep(int chess[8][8], int x, int y, int dx, int dy)
 }
 
 int main() {
-    int chess[8][8], color = 1, next[8][8] = { 0 }, x, y;
+    int chess[8][8],color=1,next[8][8]={0},x,y;
 
     while (1) {
-        printf("üKq‰Â‰ºˆÊ’u:\n");
+        printf("é»‘å­å¯ä¸‹ä½ç½®:\n");
         checkNewStepByColor(chess, next, 2);
         scanf("%d %d", &x, &y);
         checkNewStep(chess, next, x, y);
-        printf("”’q‰Â‰ºˆÊ’u:\n");
+        printf("ç™½å­å¯ä¸‹ä½ç½®:\n");
         checkNewStepByColor(chess, next, 1);
-        printf("üKq‰Â‰ºˆÊ’u:\n");
+        printf("é»‘å­å¯ä¸‹ä½ç½®:\n");
         checkNewStepByColor(chess, next, 2);
 
-        int count = 0, blackCount = 0, whiteCount = 0;
+        int count = 0, blackCount = 0,whiteCount = 0;
         for (int x = 0; x < 9; x++) {
             for (int y = 0; y < 9; y++) {
                 if (chess[x][y] == 1) {
@@ -86,14 +86,14 @@ int main() {
         }
         if (count == 64) {
             if (whiteCount > blackCount)
-                printf("”’ŠûŠlŸ!\n");
+                printf("ç™½æ£‹ç²å‹!\n");
             else if (whiteCount < blackCount)
-                printf("üKŠûŠlŸ!\n");
+                printf("é»‘æ£‹ç²å‹!\n");
             else
-                printf("•½è!\n");
+                printf("å¹³æ‰‹!\n");
             break;
         }
-
+            
     }
-    return 0;
+	return 0;
 }
