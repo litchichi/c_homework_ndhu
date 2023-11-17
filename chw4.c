@@ -1,98 +1,85 @@
 #include<stdio.h>
 
-void checkNewStep(int chess[8][8], int next[8][8], int x, int y);
+void checkNewStepByColor(int next[8][8], int color);
+void checkNewStep(int next[8][8], int x, int y, int color);
+int newStep(int x, int y, int dx, int dy, int color);
 
-int chess[8][8] = { {0,0,0,0,0,0,0,0},
-                 {0,0,0,0,0,0,0,0},
-                 {0,0,0,0,0,0,0,0},
-                 {0,0,0,1,2,0,0,0},
-                 {0,0,0,2,1,0,0,0},
-                 {0,0,0,0,0,0,0,0},
-                 {0,0,0,0,0,0,0,0},
-                 {0,0,0,0,0,0,0,0}
+int chess[8][8] = {
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 1, 2, 0, 0, 0},
+    {0, 0, 0, 2, 1, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0}
 };
 
-void checkNewStepByColor(int chess[8][8], int next[8][8], int color)
+int main() {
+    int chess[8][8],next[8][8],color,x,y;
+  
+    printf("白子可下位置:\n");
+    checkNewStepByColor( next, 2);
+    printf("黑子可下位置:\n");
+    checkNewStepByColor( next, 1);
+
+	return 0;
+}
+
+void checkNewStepByColor(int next[8][8], int color)
 {
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            if (chess[i][j] == color) {
-                checkNewStep(chess, next, i, j);
+            next[i][j] = 0;
+        }
+    }
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+                checkNewStep(next, i, j, color);
+        }
+    }
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (next[i][j] > 0) {
+                printf("(%d,%d) ", i, j);
             }
         }
     }
+    printf("\n");
 }
 
-void checkNewStep(int chess[8][8], int next[8][8], int x, int y) {
-    int directions[8][2] = {{-1, -1},{-1, 0},{-1, 1},{0, -1},{0, 1},{1, -1},{1, 0},{1, 1}};
-
+void checkNewStep(int next[8][8], int x, int y, int color) {
+    int directions[8][2] = { {-1, -1},{-1, 0},{-1, 1},{0, -1},{0, 1},{1, -1},{1, 0},{1, 1} };
     for (int k = 0; k < 8; k++) {
         int dx = directions[k][0];
         int dy = directions[k][1];
-        int step = newStep(chess, x, y, dx, dy);
-        if (step > 0) {
-            int i = x + step * dx;
-            int j = y + step * dy;
-            next[i][j] = step;
+        int n = newStep( x, y, dx, dy,color);
+        if (n > 0) {
+            next[x][y] = 1;
         }
     }
 }
 
-int newStep(int chess[8][8], int x, int y, int dx, int dy)
+int newStep(int x, int y, int dx, int dy, int color)
 {
-    int i = x + dx;
-    int j = y + dy;
-    int step = 1;
+    int X = x + dx;
+    int Y = y + dy;
+    int n = 1;
 
-    while (i >= 0 && i < 8 && j >= 0 && j < 8) {
-        if (chess[i][j] == 0) {
-            return step;
-        }
-        i += dx;
-        j += dy;
-        step++;
-    }
-
-    return 0;
-}
-
-int main() {
-    int chess[8][8],color=1,next[8][8]={0},x,y;
-
-    while (1) {
-        printf("黑子可下位置:\n");
-        checkNewStepByColor(chess, next, 2);
-        scanf("%d %d", &x, &y);
-        checkNewStep(chess, next, x, y);
-        printf("白子可下位置:\n");
-        checkNewStepByColor(chess, next, 1);
-        printf("黑子可下位置:\n");
-        checkNewStepByColor(chess, next, 2);
-
-        int count = 0, blackCount = 0,whiteCount = 0;
-        for (int x = 0; x < 9; x++) {
-            for (int y = 0; y < 9; y++) {
-                if (chess[x][y] == 1) {
-                    whiteCount++;
-                    count++;
+    if (X >= 0 && X < 8 && Y >= 0 && Y < 8) {
+        if (chess[X][Y] != color && chess[X][Y] != 0) {
+            while (X >= 0 && X < 8 && Y >= 0 && Y < 8) {
+                if (chess[X][Y] == 0) {
+                    break;
                 }
-                else if (chess[x][y] == 1) {
-                    blackCount++;
-                    count++;
+                else if (chess[X][Y] == color) {
+                    return n;
                 }
-                else;
+                X += dx;
+                Y += dy;
+                n++;
             }
         }
-        if (count == 64) {
-            if (whiteCount > blackCount)
-                printf("白棋獲勝!\n");
-            else if (whiteCount < blackCount)
-                printf("黑棋獲勝!\n");
-            else
-                printf("平手!\n");
-            break;
-        }
-            
     }
-	return 0;
+    return 0;
 }
