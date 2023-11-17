@@ -32,7 +32,6 @@ int main() {
     printf("2 白棋電腦下\n");
     printChessBoard();
     getBestMove( 2);
-    printf("電腦下 (%d,%d)\n");
     printChessBoard();
 
     return 0;
@@ -82,6 +81,7 @@ void getBestMove(int color) {
         }
     }
     if (max_x != -1 && max_y != -1) {
+        printf("電腦下 (%d,%d), 可翻轉 %d 子\n", max_x, max_y, max_flips);
         makeMove(max_x, max_y, color);
     }
 }
