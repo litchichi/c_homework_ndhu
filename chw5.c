@@ -2,7 +2,7 @@
 
 void printChessBoard();
 void makeMove(int x, int y, int color);
-int getBestMove(int next[8][8], int color);
+void getBestMove(int color);
 void checkNewStepByColor(int next[8][8], int color);
 void checkNewStep(int next[8][8], int x, int y, int color);
 int newStep(int x, int y, int dx, int dy, int color);
@@ -31,8 +31,7 @@ int main() {
     makeMove(x, y, 1);
     printf("2 白棋電腦下\n");
     printChessBoard();
-    x, y = getBestMove(next, 2);
-    makeMove(x, y, 2);
+    getBestMove( 2);
     printf("電腦下 (%d,%d)\n");
     printChessBoard();
 
@@ -60,26 +59,32 @@ void makeMove(int x, int y, int color) {
     }
 }
  
-int getBestMove(int next[8][8], int color) {
+void getBestMove(int color) {
     int max_x = -1;
     int max_y = -1;
     int max_flips = 0;
 
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            if (next[i][j] > 0) {
-                if (next[i][j] > max_flips) {
+            if (chess[i][j] == 0) {
+                int flips = 0;
+                for (int k = 0; k < 8; k++) {
+                    int dx = directions[k][0];
+                    int dy = directions[k][1];
+                    flips += newStep(i, j, dx, dy, color);
+                }
+                if (flips > max_flips) {
+                    max_flips = flips;
                     max_x = i;
                     max_y = j;
-                    max_flips = next[i][j];
                 }
             }
         }
     }
-
-    return (max_x, max_y);
+    if (max_x != -1 && max_y != -1) {
+        makeMove(max_x, max_y, color);
+    }
 }
-
 
 
 void checkNewStepByColor(int next[8][8], int color)
@@ -111,7 +116,7 @@ void checkNewStep(int next[8][8], int x, int y, int color) {
         int dy = directions[k][1];
         int n = newStep(x, y, dx, dy, color);
         if (n > 0) {
-            next[x][y] = n;
+            next[x][y] = 1;
         }
     }
 }
