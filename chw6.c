@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include<stdio.h>
 
 int hasNoMove(int next[8][8], int color, int check);
@@ -24,10 +23,12 @@ int chess[8][8] = {
 int directions[8][2] = { {-1, -1},{-1, 0},{-1, 1},{0, -1},{0, 1},{1, -1},{1, 0},{1, 1} };
 
 int main() {
-    int chess[8][8], next[8][8], color, x, y, check=0;
+    int chess[8][8], next[8][8], color, x, y, check = 0;
     while (check < 2) {
         check = 0;
-        if (check == hasNoMove(chess, 1, check)) {
+        int checktemp = check;
+        check = hasNoMove(chess, 1, check);
+        if (check == checktemp) {
             printf("1 黑棋你下\n");
             printChessBoard();
             checkNewStepByColor(next, 1);
@@ -35,8 +36,9 @@ int main() {
             scanf("%d %d", &x, &y);
             makeMove(x, y, 1);
         }
-        int checktemp = check;
-        if (checktemp == hasNoMove(chess, 2, check)) {
+        checktemp = check;
+        check = hasNoMove(chess, 2, check);
+        if (check == checktemp) {
             printf("2 白棋電腦下\n");
             printChessBoard();
             getBestMove(2);
@@ -47,8 +49,8 @@ int main() {
     return 0;
 }
 
+
 int hasNoMove(int next[8][8], int color, int check) {
-    int hnm = 0;
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             next[i][j] = 0;
@@ -56,22 +58,19 @@ int hasNoMove(int next[8][8], int color, int check) {
     }
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            checkNewStep(next, i, j, color);
+            if (chess[i][j] == 0)
+                checkNewStep(next, i, j, color);
         }
     }
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            if (next[i][j] > 0) {
-                hnm++;
+            if (next[i][j] == 1) {
+                return check;
             }
         }
     }
-    if (hnm == 0)
-        return check+=1;
-    else
-        return check;
+    return check+1;
 }
-
 
 void printWinner() {
     int blackCount = 0, whiteCount = 0;
@@ -87,10 +86,10 @@ void printWinner() {
     }
 
     if (blackCount > whiteCount) {
-        printf("黑棋獲勝\n");
+        printf("黑棋獲勝 %d : %d\n", blackCount, whiteCount);
     }
     else if (blackCount < whiteCount) {
-        printf("白棋獲勝\n");
+        printf("白棋獲勝 %d : %d\n", whiteCount, blackCount);
     }
     else {
         printf("平局\n");
